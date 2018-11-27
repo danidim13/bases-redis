@@ -3,11 +3,11 @@
 
 import sys
 
-from redisapp.app import RedisApp
+from redisapp.app import App
 
 def main():
 
-    clase = RedisApp()
+    clase = App()
 
     print 'Hola mundo'
     for i in xrange(len(sys.argv)):
