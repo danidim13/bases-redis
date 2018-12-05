@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import redis
 import string
+import random
 
 class App(object):
     r""" Clase que implementa la lógica de la aplicación.
@@ -47,5 +48,5 @@ class App(object):
 
         top_products = self.redis.zrange(tmpzset, 0, n, desc=True)
         self.redis.delete(tmpzset)
-        
+
         return top_products
