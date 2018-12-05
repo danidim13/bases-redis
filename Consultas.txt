@@ -1,0 +1,78 @@
+Promedio
+
+
+ZADD products.by.average //sacar el promedio.
+
+HSET products.by.average
+
+HSET reviews.by.product 
+
+HSET star.rating.by.review
+
+Datos del csv
+
+Hash products.by.average 
+
+
+
+
+
+
+
+
+
+
+
+
+
+Pseudocódigo:
+
+def get_promedio_zset(self, product_id):
+	float num 
+	num = "ZGET products.by.average " + product_id
+
+def get_promedio_hash(product_id):
+	float num 
+	num = "HGET products.by.average " + product_id
+
+
+def set_promedio(self):
+	
+	iterar sobre products_id
+
+		results = "HGET reviews.by.product " + product_id
+		
+		iterar hasta que no hayan resultados
+			cont += (float)"HGET star.rating.by.review" + review_id
+		
+		promedio = cont/resultados.
+
+		ZADD products.by.average product_id promedio
+
+def set_promedio(self):
+	
+	iterar sobre products_id
+
+		results = "HGET reviews.by.product " + product_id
+		
+		iterar hasta que no hayan resultados
+			cont += (float)"HGET star.rating.by.review" + review_id
+		
+		promedio = cont/resultados.
+
+		ZADD products.by.average product_id promedio
+		
+
+
+
+
+Tendencias:
+	
+	"zget reviews:" + marketplace + " " + review_date //Obtiene todos los reviews de ese día
+	
+	iterar sobre reviews para buscar productos.
+		is_verified= hget reviews:review_id //obtener verified de aca pero no entiendo implementacion
+		if is_verified = 'Y'
+			hget reviews:review_id //obtener producto de aca pero no entiendo implementacion
+				"ZINCRBY product:" + marketplace + "1 product_id" //Aunmenta en 1 el contador del product id.
+	
