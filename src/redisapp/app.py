@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import redis
+import string
 
 class App(object):
     r""" Clase que implementa la lógica de la aplicación.
@@ -30,4 +31,21 @@ class App(object):
                 ventas. Por defecto se usa la fecha del servidor.
             n (int): Cantidad de productos a incluir en la lista.
         """
-        pass
+
+        # Primero se obtienen las
+        zset_key = 'reviews:marketplace:{:s}'.format(marketplace)
+        rids = self.redis.zrangebyscore(zset_key, fecha_ini, fecha_fin)
+
+        # Filtrar los rids que sean compras verificadas
+        verified = [id for id in rids if self.redis.hmget('review:' + id, 'verified_purchase')[0] == 'Y']
+
+        # Generar una llave aleatoria para el zset temporal
+        tmpzset = 'tendencias_tmp_' + ''.join(random.choice(string.ascii_letters) for _ in range(6))
+
+        for rid in verified:
+            self.redis.zincrby(tmpzset, self.redis.hmget('review:' + rid, 'product_id'), 1)
+
+        top_products = self.redis.zrange(tmpzset, 0, n, desc=True)
+        self.redis.delete(tmpzset)
+        
+        return top_products
