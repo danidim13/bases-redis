@@ -67,7 +67,8 @@ def set_promedio(self):
 
 
 Tendencias:
-	
+	def tendencies(marketplace, date)
+
 	"zget reviews:" + marketplace + " " + review_date //Obtiene todos los reviews de ese día
 	
 	iterar sobre reviews para buscar productos.
@@ -75,4 +76,26 @@ Tendencias:
 		if is_verified = 'Y'
 			hget reviews:review_id //obtener producto de aca pero no entiendo implementacion
 				"ZINCRBY product:" + marketplace + "1 product_id" //Aunmenta en 1 el contador del product id.
-	
+
+
+
+
+
+
+	reviews.id = "SMEMBERS reviews." + marketplace //Toda la lista de review_id
+
+	iterar sobre review.id
+	    if "SMEMBERS reviews:is.verified.purchase:" + review.id == 'Y'
+	        product = "SMEMBERS product.by.review:" + review.id
+	        "SADD reviews.by.product:" + product + " " + review.id
+
+
+	///Obtener más trendy
+	trendy = 0
+	trendy_product = ""
+	current_product = iterar sobre todos los sets reviews.by.product:
+	    count = "SCARD reviews.by.product: " + current_product
+	    if trendy < count
+	        trendy = count
+	        trendy_product = current_product
+
