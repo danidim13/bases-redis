@@ -4,6 +4,7 @@ import redis
 import random
 import time
 import exceptions
+import csv
 from app import App
 import numpy as np
 
@@ -84,4 +85,49 @@ class Tester(object):
         avg = np.mean(results)
         max = np.max(results)
         print 'Mínimo: {:f}, promedio: {:f}, máximo: {:f}'.format(min, avg, max)
-        return results
+        return avg
+
+    def test_tendencias_rango(self, n_total, start_size, step):
+        r"""Probar consulta de tendencias para rangos de diferente tamaño
+        """
+
+        repeat = 50
+
+        arr = np.zeros((n_total, 2))
+
+        market = 'UK'
+        key = 'reviews:marketplace:' + market
+
+        filename = 'prueba_tend_2.csv'
+
+        total_elem = self.app.redis.zcard(key)
+
+        for n in xrange(n_total):
+            start_elem = random.randint(0, total_elem/4)
+            start_date = self.app.redis.zrange(key, start_elem, start_elem, withscores=True)[0][1]
+
+            end_elem = start_elem + n*step + start_size
+
+            if end_elem >= total_elem:
+                print "No hay suficientes elementos!"
+                print start_elem, end_elem
+                raise Exception
+
+            end_date = self.app.redis.zrange(key, end_elem, end_elem, withscores=True)[0][1]
+
+            size = self.app.redis.zcount(key, start_date, end_date)
+            time = self.test_function(repeat, 'tendencias_v1', marketplace=market, n='5', fecha_ini=start_date, fecha_fin=end_date)
+
+            arr[n, 0] = size
+            arr[n, 1] = time
+
+        print "Pruebas terminadas para n = " + str(n_total)
+
+        with open(filename, 'w') as csv_file:
+
+            writer = csv.writer(csv_file)
+            writer.writerow(['tamaño', 'tiempo (s)'])
+            for n in xrange(n_total):
+                writer.writerow(arr[n, :].tolist())
+
+        print "Prueba finalizada!"

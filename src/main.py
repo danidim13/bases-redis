@@ -13,7 +13,7 @@ def main():
 
     print 'prueba para 100 repeticiones de tendencias_v1'
 
-    tester.test_function(50, 'tendencias_v1', marketplace='FR', n='5', fecha_ini=13000, fecha_fin=15000)
+    tester.test_tendencias_rango(60, 200, 50)
 
 if __name__ == "__main__":
     main()
