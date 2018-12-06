@@ -113,8 +113,8 @@ class App(object):
             title = self.redis.hmget('product.title.by.product.id', i)
            # print title[0]
 
-	
-	def get_average_from_zset(self, n):
+
+    def get_average_from_zset(self, n):
         products = self.redis.zrevrange('products.by.average', 0, n)
 
        # print "Los {:s} mejores promedios son: ".format(str(n))
