@@ -8,6 +8,14 @@ from app import App
 import numpy as np
 
 class Tester(object):
+    r"""Clase para probar los tiempos de la apliación.
+
+    Recibe como parámetro una instancia de App()
+
+    Args:
+        app (App, optional): Instancia de la aplicación, si no se proporciona
+            crea una con valores default.
+    """
 
     def __init__(self, app=None):
         if app is None:
@@ -16,7 +24,10 @@ class Tester(object):
             self.app = app
 
     def test_function(self, repetitions, func_name, *args, **kwargs):
-        r"""
+        r"""Funcion de utilidad para correr pruebas sobre una función.
+
+        Las pruebas se corren sobre self.app.<func_name>
+
         Args:
             repetitions (int): Cantidad de repeticiones para la prueba.
             func_name (string): Nombre de la función que se va a probar.
