@@ -29,9 +29,24 @@ def procesar(file, host='localhost', port=6379):
 
         # Insertar los datos en review:<id>
         review_id = tupla.pop('review_id')
+        product_id = tupla.pop('product_id')
+        product_title = tupla.pop('product_title')
+        star_rating = tupla.pop('star_rating')
+
         con.hmset('review:' + review_id, tupla)
 
         con.zadd('reviews:marketplace:' + tupla['marketplace'], review_id, float(tupla['review_date']))
+
+        if con.hexists("reviews.by.product", product_id):
+            existent_id = con.hmget("reviews.by.product", product_id)
+            existent_id[0] = existent_id[0] + ' ' + review_id
+            con.hset('reviews.by.product', product_id, existent_id[0])
+        else:
+            con.hset('reviews.by.product', product_id, review_id)
+
+        con.hset('product.title.by.product.id', product_id, product_title)
+
+        con.hset('star.rating.by.review', review_id, star_rating)
 
         count += 1
 
